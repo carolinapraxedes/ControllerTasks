@@ -1,7 +1,9 @@
 <?php
 
+use App\Mail\MensagemMail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,5 +25,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('task',App\Http\Controllers\TaskController::class)->middleware('auth');
 
 Auth::routes();
+
+Route::get('mensagem',function(){
+    return new MensagemMail;
+    //Mail::to('carolinapraxedesdev@gmail.com')->send(new MensagemMail());
+    //return 'E-mail enviado com sucesso';
+});
 
 
