@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewTaskMail;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 
 class TaskController extends Controller
 {
@@ -25,6 +28,8 @@ class TaskController extends Controller
         }else{
             return 'Você não está logado';
         }
+
+       
         
     }
 
@@ -33,7 +38,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        return view('task.create');
     }
 
     /**
@@ -41,7 +46,11 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $task = task::create($request->all());
+        //dd($task);
+        $userEmail= auth()->user()->email; //email do usuario logado (autenticado)
+        Mail::to($userEmail)->send(new NewTaskMail($task));
+        return redirect()->route('task.show',['task'=>$task->id]);
     }
 
     /**
@@ -49,7 +58,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        
     }
 
     /**

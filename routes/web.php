@@ -21,10 +21,13 @@ Route::get('/', function () {
 });
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::resource('task',App\Http\Controllers\TaskController::class)->middleware('auth');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
+->name('home')
+->middleware('verified');
+Route::resource('task',App\Http\Controllers\TaskController::class)
+->middleware('verified');
 
-Auth::routes();
+Auth::routes(['verify'=>true]);
 
 Route::get('mensagem',function(){
     return new MensagemMail;
