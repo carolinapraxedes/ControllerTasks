@@ -21,9 +21,9 @@ Route::get('/', function () {
 });
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
+/*Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
 ->name('home')
-->middleware('verified');
+->middleware('verified');*/
 Route::resource('task',App\Http\Controllers\TaskController::class)
 ->middleware('verified');
 

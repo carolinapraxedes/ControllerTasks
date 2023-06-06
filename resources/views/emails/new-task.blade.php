@@ -1,10 +1,10 @@
 <x-mail::message>
 # {{$task}}
 
-Date end: {{$date-end}}
+Date end: {{$dateEnd}}
 
 
-<x-mail::button :url="'$url'">
+<x-mail::button :url="$url">
 More details about new task
 </x-mail::button>
 

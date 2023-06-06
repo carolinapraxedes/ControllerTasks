@@ -24,7 +24,8 @@ class NewTaskMail extends Mailable
     {   
 
         $this->task = $task->task;
-        $this->dateEnd = $task->date_end;
+        $this->dateEnd =date('d/m/Y', strtotime($task->dateEnd));
+        $this->url = 'http://localhost:8000/task/'.$task->id;
               
     }
 
@@ -34,7 +35,7 @@ class NewTaskMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Task Mail',
+            subject: 'A new task has been created',
         );
     }
 

@@ -20,14 +20,19 @@ class TaskController extends Controller
      */
     public function index()
     {
-        if(Auth::check()){
+        $userID = auth()->user()->id;
+        
+        $task = Task::where('userID',$userID)->paginate(2);
+
+        return view('task.index',['task'=>$task]);
+        /*if(Auth::check()){
             $id = Auth::user()->id;
             $name = Auth::user()->name;
             $email = Auth::user()->email;
             return "ID: $id | Name: $name | Email: $email";
         }else{
             return 'Você não está logado';
-        }
+        }*/
 
        
         
@@ -46,9 +51,15 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $task = task::create($request->all());
-        //dd($task);
+        $data =$request->all('task','dateEnd'); 
+        //estou dizendo quais sao os atributos que serao recuperados
+        $data['userID'] = auth()->user()->id;
+
+        //dd($data);
+        $task = task::create($data);
+        
         $userEmail= auth()->user()->email; //email do usuario logado (autenticado)
+        
         Mail::to($userEmail)->send(new NewTaskMail($task));
         return redirect()->route('task.show',['task'=>$task->id]);
     }
@@ -58,7 +69,8 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        
+        //dd($task);
+        return view('task.show',['task'=> $task]);
     }
 
     /**
@@ -66,7 +78,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        return view('task.edit',['task'=>$task]);
     }
 
     /**
@@ -74,7 +86,8 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $task->update($request->all());
+        return redirect()->route('task.show',['task'=>$task->id]);
     }
 
     /**

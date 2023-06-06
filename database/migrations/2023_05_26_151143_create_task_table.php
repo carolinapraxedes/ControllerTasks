@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('task', function (Blueprint $table) {
             $table->id();
             $table->string('task',200);
-            $table->date('date-end');
+            $table->date('dateEnd');
             $table->timestamps();
         });
     }
