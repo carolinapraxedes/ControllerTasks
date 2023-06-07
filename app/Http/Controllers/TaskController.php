@@ -78,7 +78,13 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        return view('task.edit',['task'=>$task]);
+        $userID = auth()->user()->id;
+        
+        if($task->userID == $userID){
+            return view('task.edit',['task'=>$task]);            
+        }
+        
+        return view('acessoNegado');
     }
 
     /**
@@ -86,8 +92,19 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        $task->update($request->all());
-        return redirect()->route('task.show',['task'=>$task->id]);
+        $userID = auth()->user()->id;
+        
+        if($task->userID == $userID){
+            $task->update($request->all());
+            return redirect()->route('task.show',['task'=>$task->id]);           
+        }
+        
+        return view('acessoNegado');
+
+
+        
+
+
     }
 
     /**
@@ -95,6 +112,10 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        if(!$task->userID == auth()->user()->id){
+            return view('acessoNegado');
+        }
+        $task->delete();
+        return redirect()->route('task.index');   
     }
 }
